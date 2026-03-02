@@ -1,0 +1,6 @@
+import {ACTIONS} from './App.jsx'
+export default function OperationButton({dispatch,operation}){
+    return(
+         <button type='button' onClick={()=>dispatch({type: ACTIONS.CHOOSE_OPERATION,payload:{operation}})}>{operation}</button>
+    )
+}
