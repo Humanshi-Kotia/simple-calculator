@@ -1,6 +1,5 @@
-import { useReducer, useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+import { useReducer, useState,useEffect } from 'react'
+// import { useReducer, useEffect } from "react"
 import './App.css'
 import DigitButton from './DigitButton'
 import OperationButton from './OperationButton'
@@ -129,6 +128,44 @@ function formatOperand(operand){
 
 function App(){
   const [{currentOperand,previousOperand,operation},dispatch]=useReducer(reducer,{})
+
+  useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (e.key >= 0 && e.key <= 9) {
+      dispatch({ type: ACTIONS.ADD_DIGIT, payload: { digit: e.key } })
+    }
+    if (e.key === ".") {
+      dispatch({ type: ACTIONS.ADD_DIGIT, payload: { digit: "." } })
+    }
+    if (e.key === "+") {
+      dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operation: "+" } })
+    }
+     if (e.key === "-") {
+      dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operation: "-" } })
+    }
+    if (e.key === "*") {
+      dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operation: "*" } })
+    }
+    if (e.key === "/") {
+      dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operation: "÷" } })
+    }
+    if (e.key === "Enter" || e.key === "=") {
+      dispatch({ type: ACTIONS.EVALUATE })
+    }
+    if (e.key === "Backspace") {
+      dispatch({ type: ACTIONS.DELETE_DIGIT })
+    }
+    if (e.key === "Escape") {
+      dispatch({ type: ACTIONS.CLEAR })
+    }
+  }
+
+  window.addEventListener("keydown", handleKeyDown)
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown)
+  }
+}, [])
  
   return(
     <div className="calculator-grid">
